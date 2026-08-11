@@ -1,2 +1,2 @@
-# webmc.github.io
+# useless-repo
 用来存一些 HTML
