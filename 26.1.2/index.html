@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft 26.1.2</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
+body{
+  min-height:100vh;
+  background:#0f1118;
+  background-image: url("panorama.png");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:40px;
+  color:#f1f5f9;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.65);
+  z-index:-1;
+}
+.container{
+  text-align:center;
+  padding:0 20px;
+}
+h1{
+  font-size:34px;
+  font-weight:600;
+  margin-bottom:12px;
+  letter-spacing:1px;
+}
+.subtitle{
+  color:#b8c2d1;
+  font-size:16px;
+  margin-bottom:36px;
+}
+.btn-group{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+button{
+  padding:16px 40px;
+  font-size:17px;
+  font-weight:500;
+  border:1px solid rgba(168,85,247,0.4);
+  border-radius:12px;
+  background:rgba(168,85,247,0.18);
+  color:#f0e7ff;
+  cursor:pointer;
+  transition:0.25s ease;
+  backdrop-filter:blur(4px);
+  min-width:180px;
+}
+button:hover{
+  background:rgba(168,85,247,0.4);
+  border-color:rgba(168,85,247,0.7);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(168,85,247,0.25);
+}
+button:active{
+  transform:translateY(0px);
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Minecraft 26.1.2</h1>
+  <div class="subtitle">Novix 26.1.2 可能性能要求高</div>
+  <div class="btn-group">
+    <button onclick="location.href='novix-1.2.html'">启动 Novix-1.2</button>
+  <div class="btn-group">
+    <button onclick="location.href='eag26-single.html'">启动 Novix 带材质版</button>
+  </div>
+</div>
+</body>
+</html>

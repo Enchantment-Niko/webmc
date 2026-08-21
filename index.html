@@ -1,5 +1,76 @@
-<html>
-<title>Test Page</title>
-<h1>测试页面</h1><br></br>
-<a href="1.12.2u3wasm.html">Eaglercraft 1.12.2 u3 WASM</a>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eaglercraft 版本选择</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
+body{
+  min-height:100vh;
+  background:#0f1118;
+  background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f1118 70%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:40px;
+  color:#f1f5f9;
+}
+.container{
+  text-align:center;
+  padding:0 20px;
+}
+h1{
+  font-size:34px;
+  font-weight:600;
+  margin-bottom:12px;
+  letter-spacing:1px;
+}
+.subtitle{
+  color:#94a3b8;
+  font-size:16px;
+  margin-bottom:36px;
+}
+.btn-group{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+button{
+  padding:16px 40px;
+  font-size:17px;
+  font-weight:500;
+  border:1px solid rgba(59,130,246,0.3);
+  border-radius:12px;
+  background:rgba(37,99,235,0.15);
+  color:#e2e8f0;
+  cursor:pointer;
+  transition:0.25s ease;
+  backdrop-filter:blur(4px);
+  min-width:180px;
+}
+button:hover{
+  background:rgba(37,99,235,0.35);
+  border-color:rgba(59,130,246,0.6);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(37,99,235,0.2);
+}
+button:active{
+  transform:translateY(0px);
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Eaglercraft</h1>
+  <div class="subtitle">选择要启动的游戏版本</div>
+  <div class="btn-group">
+    <button onclick="location.href='/1.21.11'">1.21.11‑u1beta‑WASM</button>
+    <button onclick="location.href='/26.1.2'">26.1.2</button>
+    <button onclick="location.href='1.12.2u3wasm.html'">1.12.2‑u3‑wasm</button>
+  </div>
+</div>
+</body>
 </html>
