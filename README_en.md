@@ -1,5 +1,7 @@
 # webmc
 [中文](README.md) | English
+# Project Introduction
+![Intro](title.png "A image")
 # Legal Disclaimer
 * For learning and reference only, does not provide the full game or source code
 * Only a trial version is provided, please purchase the full version for the complete game
