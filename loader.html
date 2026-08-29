@@ -59,7 +59,7 @@
                 <mdui-select id="versionSelect" label="选择游戏版本" class="section-gap">
                 </mdui-select>
                 <mdui-text-field id="rawUrl" label="GitHub Raw地址（自定义）" class="section-gap"></mdui-text-field>
-                <mdui-select id="proxySelect" label="选择 gh‑proxy 代理节点" class="section-gap">
+                <mdui-select id="proxySelect" label="选择 Github 代理节点" class="section-gap">
                     <mdui-menu-item value="gh-proxy.org">gh‑proxy.org（自动）</mdui-menu-item>
                     <mdui-menu-item value="v4.gh-proxy.org">v4.gh‑proxy.org（仅IPv4）</mdui-menu-item>
                     <mdui-menu-item value="v6.gh-proxy.org">v6.gh‑proxy.org（仅IPv6）</mdui-menu-item>
@@ -68,7 +68,7 @@
                     <mdui-linear-progress id="progressBar"></mdui-linear-progress>
                     <div id="progressInfo" style="margin-top:6px;font-size:0.85rem;color:rgb(var(--mdui-color-on-surface-variant))">等待下载</div>
                 </div>
-                <mdui-button id="btnDownload" variant="filled" full-width class="section-gap">下载并在新about:blank标签打开游戏</mdui-button>
+                <mdui-button id="btnDownload" variant="filled" full-width class="section-gap">下载并在新blob标签打开游戏</mdui-button>
                 <div class="status-box" id="status">状态：等待操作</div>
             </div>
         </mdui-card>
@@ -77,7 +77,6 @@
             <mdui-button variant="outlined" href="https://www.mdui.org/zh-cn/" target="_blank">MDUI2 官网</mdui-button>
         </div>
     </div>
-
     <mdui-dialog headline="代理提示" class="proxy-warning-dialog">
         仅在Github Pages / MCJS镜像不可用时使用<br>
         禁止大量使用<br>
@@ -86,7 +85,6 @@
         <mdui-button slot="action" variant="text">取消</mdui-button>
         <mdui-button slot="action" variant="tonal" disabled>继续</mdui-button>
     </mdui-dialog>
-
 <script>
 const VERSION_LIST = [{"version":"1.14.4","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.14.4/index.html"},{"version":"1.16.5","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.16.5/index.html"},{"version":"1.20.6","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.20.6/chinese.html"},{"version":"1.21.11","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.21.11/desktop.html"},{"version":"26.1.2","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/26.1.2/novix-1.2.html"},{"version":"26.2","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/26.2/index.html"},{"version":"1.6.4 Ultimate Modpack","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.6.4-modpack/wasm.html"}];
 const statusEl = document.getElementById('status');
@@ -96,7 +94,6 @@ const proxySelectEl = document.getElementById('proxySelect');
 const btnDownload = document.getElementById('btnDownload');
 const progressBar = document.getElementById('progressBar');
 const progressInfo = document.getElementById('progressInfo');
-
 const dialog = document.querySelector(".proxy-warning-dialog");
 const actionButtons = dialog.querySelectorAll('mdui-button[slot="action"]');
 const btnCancel = actionButtons[0];
@@ -112,6 +109,18 @@ function resetProgress(){
     progressBar.value = 0;
     progressBar.indeterminate = false;
     progressInfo.textContent = "等待下载";
+}
+
+function formatBytes(bytes){
+    if(bytes < 1024) return `${bytes} B`;
+    if(bytes < 1024*1024) return `${(bytes/1024).toFixed(1)} KB`;
+    return `${(bytes/(1024*1024)).toFixed(1)} MB`;
+}
+
+function formatSpeed(bytesPerSec){
+    if(bytesPerSec < 1024) return `${bytesPerSec.toFixed(1)} B/s`;
+    if(bytesPerSec < 1024*1024) return `${(bytesPerSec/1024).toFixed(1)} KB/s`;
+    return `${(bytesPerSec/(1024*1024)).toFixed(1)} MB/s`;
 }
 
 async function renderSelectUi(){
@@ -141,7 +150,7 @@ async function openGameInAboutBlank(htmlStr){
         URL.revokeObjectURL(blobUrl);
         return;
     }
-    log("已打开about:blank新标签页加载游戏");
+    log("已打开新标签页加载游戏");
     win.location.href = blobUrl;
 }
 
@@ -162,14 +171,14 @@ async function fetchWithProgress(url){
         received += value.length;
         const now = performance.now();
         const elapsed = (now - startTime)/1000;
-        const speed = elapsed>0 ? (received / 1024 / elapsed) : 0;
+        const speedBytesPerSec = elapsed>0 ? (received / elapsed) : 0;
         if(total && !Number.isNaN(total)){
             const pct = (received / total)*100;
             progressBar.indeterminate = false;
             progressBar.value = pct / 100;
-            progressInfo.textContent = `${pct.toFixed(1)}% | ${(received/1024).toFixed(1)}KB / ${(total/1024).toFixed(1)}KB | ${speed.toFixed(1)} KB/s`;
+            progressInfo.textContent = `${pct.toFixed(1)}% | ${formatBytes(received)} / ${formatBytes(total)} | ${formatSpeed(speedBytesPerSec)}`;
         }else{
-            progressInfo.textContent = `已接收 ${(received/1024).toFixed(1)}KB | ${speed.toFixed(1)} KB/s（服务器未返回总大小）`;
+            progressInfo.textContent = `已接收 ${formatBytes(received)} | ${formatSpeed(speedBytesPerSec)}（服务器未返回总大小）`;
         }
     }
     progressBar.indeterminate = false;
@@ -211,18 +220,15 @@ async function doDownload(){
     }
 }
 
-// 输入校验
 confirmInput.addEventListener('input',()=>{
     btnConfirm.disabled = confirmInput.value.trim() !== "我已理解";
 });
 
-// 替换原来的btnDownload.onclick
 btnDownload.onclick = ()=>{
     dialog.open = true;
     confirmInput.value = "";
     btnConfirm.disabled = true;
 };
-
 btnCancel.addEventListener("click",()=>{
     dialog.open = false;
 });
@@ -230,11 +236,9 @@ btnConfirm.addEventListener("click",()=>{
     dialog.open = false;
     doDownload();
 });
-
 versionSelectEl.addEventListener('change',()=>{
     rawUrlEl.value = versionSelectEl.value;
 });
-
 (async function init(){
     await renderSelectUi();
 })();
