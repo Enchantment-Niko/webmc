@@ -81,7 +81,7 @@
         仅在Github Pages / MCJS镜像不可用时使用<br>
         禁止大量使用<br>
         （仅供学习参考使用）
-        <mdui-text-field id="confirmInput" label="请输入：我已理解" class="section-gap"></mdui-text-field>
+        <mdui-text-field id="confirmInput" label="请输入密码" class="section-gap"></mdui-text-field>
         <mdui-button slot="action" variant="text">取消</mdui-button>
         <mdui-button slot="action" variant="tonal" disabled>继续</mdui-button>
     </mdui-dialog>
@@ -100,32 +100,23 @@ const btnCancel = actionButtons[0];
 const btnConfirm = actionButtons[1];
 const confirmInput = dialog.querySelector('#confirmInput');
 
-const DAILY_MAX = 15;
-const now = new Date();
-const todayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
-let savedDay = localStorage.getItem("downloadDay");
-let downloadCount = Number(localStorage.getItem("dailyDownloadCount") || 0);
-
-if(savedDay !== todayKey){
-    downloadCount = 0;
-    localStorage.setItem("downloadDay", todayKey);
-    localStorage.setItem("dailyDownloadCount", "0");
-}
-
 function log(msg){
     statusEl.textContent = msg;
     console.log(msg);
 }
+
 function resetProgress(){
     progressBar.value = 0;
     progressBar.indeterminate = false;
     progressInfo.textContent = "等待下载";
 }
+
 function formatBytes(bytes){
     if(bytes < 1024) return `${bytes} B`;
     if(bytes < 1024*1024) return `${(bytes/1024).toFixed(1)} KB`;
     return `${(bytes/(1024*1024)).toFixed(1)} MB`;
 }
+
 function formatSpeed(bytesPerSec){
     if(bytesPerSec < 1024) return `${bytesPerSec.toFixed(1)} B/s`;
     if(bytesPerSec < 1024*1024) return `${(bytesPerSec/1024).toFixed(1)} KB/s`;
@@ -144,10 +135,12 @@ async function renderSelectUi(){
     }
     await versionSelectEl.updateComplete;
 }
+
 function getProxyUrl(originalRaw){
     const host = proxySelectEl.value;
     return `https://${host}/${originalRaw}`;
 }
+
 async function openGameInAboutBlank(htmlStr){
     const blob = new Blob([htmlStr],{type:"text/html"});
     const blobUrl = URL.createObjectURL(blob);
@@ -160,6 +153,7 @@ async function openGameInAboutBlank(htmlStr){
     log("已打开新标签页加载游戏");
     win.location.href = blobUrl;
 }
+
 async function fetchWithProgress(url){
     progressBar.indeterminate = true;
     const resp = await fetch(url);
@@ -203,11 +197,6 @@ async function fetchWithProgress(url){
 }
 
 async function doDownload(){
-    if(downloadCount >= DAILY_MAX){
-        log(`已达到今日下载上限(${DAILY_MAX}次)，明天0点后自动重置`);
-        return;
-    }
-
     let raw = rawUrlEl.value.trim();
     if(!raw) raw = versionSelectEl.value;
     if(!raw){
@@ -217,13 +206,11 @@ async function doDownload(){
     btnDownload.disabled = true;
     resetProgress();
     const host = proxySelectEl.value;
-    log(`正在通过 ${host} 代理下载... 今日剩余：${DAILY_MAX - downloadCount}次`);
+    log(`正在通过 ${host} 代理下载...`);
     try{
         const pUrl = getProxyUrl(raw);
         const html = await fetchWithProgress(pUrl);
-        downloadCount +=1;
-        localStorage.setItem("dailyDownloadCount", String(downloadCount));
-        log(`下载完成，今日已使用${downloadCount}/${DAILY_MAX}次，正在打开about:blank标签页`);
+        log("下载完成，正在打开about:blank标签页");
         await openGameInAboutBlank(html);
     }catch(e){
         log(`下载/解析失败：${e.message}\n提示：切换代理节点、检查网络、确认raw链接有效性`);
@@ -234,8 +221,9 @@ async function doDownload(){
 }
 
 confirmInput.addEventListener('input',()=>{
-    btnConfirm.disabled = confirmInput.value.trim() !== "我已理解";
+    btnConfirm.disabled = confirmInput.value.trim() !== "NoLimit";
 });
+
 btnDownload.onclick = ()=>{
     dialog.open = true;
     confirmInput.value = "";
