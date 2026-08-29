@@ -1,5 +1,8 @@
 # webmc
 [中文](README.md) | English
+# Don't fork this repo!!!
+A lot of forks, mojang will DMCA this repo!!!
+Such as lax1dude's eaglercraft 1.8.8 repo
 # Project Introduction
 ![Intro](title.png "A image")
 # Legal Disclaimer

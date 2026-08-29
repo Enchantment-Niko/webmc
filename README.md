@@ -1,5 +1,8 @@
 # webmc
 中文 | [English](README_en.md)
+# 请勿Fork项目！！！
+大量的fork会引起Mojang注意，导致仓库被DMCA下架！！！
+例如 lax1dude 的Eaglercraft 1.8.8 src
 # 项目介绍
 ![介绍图](title.png "这是图片")
 # 法律声明
