@@ -54,40 +54,41 @@
 <body>
     <div class="page-container" id="mainContent">
         <h1 style="text-align:center;margin-bottom:2rem">Eaglercraft Blob加载器</h1>
-
         <mdui-card>
             <div style="padding:1.5rem">
                 <mdui-select id="versionSelect" label="选择游戏版本" class="section-gap">
                 </mdui-select>
-
                 <mdui-text-field id="rawUrl" label="GitHub Raw地址（自定义）" class="section-gap"></mdui-text-field>
-
                 <mdui-select id="proxySelect" label="选择 gh‑proxy 代理节点" class="section-gap">
                     <mdui-menu-item value="gh-proxy.org">gh‑proxy.org（自动）</mdui-menu-item>
                     <mdui-menu-item value="v4.gh-proxy.org">v4.gh‑proxy.org（仅IPv4）</mdui-menu-item>
                     <mdui-menu-item value="v6.gh-proxy.org">v6.gh‑proxy.org（仅IPv6）</mdui-menu-item>
                 </mdui-select>
-
                 <div class="section-gap">
                     <mdui-linear-progress id="progressBar"></mdui-linear-progress>
                     <div id="progressInfo" style="margin-top:6px;font-size:0.85rem;color:rgb(var(--mdui-color-on-surface-variant))">等待下载</div>
                 </div>
-
                 <mdui-button id="btnDownload" variant="filled" full-width class="section-gap">下载并在新about:blank标签打开游戏</mdui-button>
-
                 <div class="status-box" id="status">状态：等待操作</div>
             </div>
         </mdui-card>
-
         <div class="footer-wrap">
             <mdui-button variant="outlined" href="https://github.com/Enchantment-Niko" target="_blank">Github 主页</mdui-button>
             <mdui-button variant="outlined" href="https://www.mdui.org/zh-cn/" target="_blank">MDUI2 官网</mdui-button>
         </div>
     </div>
 
+    <mdui-dialog headline="代理提示" class="proxy-warning-dialog">
+        仅在Github Pages / MCJS镜像不可用时使用<br>
+        禁止大量使用<br>
+        （仅供学习参考使用）
+        <mdui-text-field id="confirmInput" label="请输入：我已理解" class="section-gap"></mdui-text-field>
+        <mdui-button slot="action" variant="text">取消</mdui-button>
+        <mdui-button slot="action" variant="tonal" disabled>继续</mdui-button>
+    </mdui-dialog>
+
 <script>
 const VERSION_LIST = [{"version":"1.14.4","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.14.4/index.html"},{"version":"1.16.5","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.16.5/index.html"},{"version":"1.20.6","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.20.6/chinese.html"},{"version":"1.21.11","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.21.11/desktop.html"},{"version":"26.1.2","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/26.1.2/novix-1.2.html"},{"version":"26.2","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/26.2/index.html"},{"version":"1.6.4 Ultimate Modpack","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.6.4-modpack/wasm.html"}];
-
 const statusEl = document.getElementById('status');
 const rawUrlEl = document.getElementById('rawUrl');
 const versionSelectEl = document.getElementById('versionSelect');
@@ -95,6 +96,12 @@ const proxySelectEl = document.getElementById('proxySelect');
 const btnDownload = document.getElementById('btnDownload');
 const progressBar = document.getElementById('progressBar');
 const progressInfo = document.getElementById('progressInfo');
+
+const dialog = document.querySelector(".proxy-warning-dialog");
+const actionButtons = dialog.querySelectorAll('mdui-button[slot="action"]');
+const btnCancel = actionButtons[0];
+const btnConfirm = actionButtons[1];
+const confirmInput = dialog.querySelector('#confirmInput');
 
 function log(msg){
     statusEl.textContent = msg;
@@ -148,7 +155,6 @@ async function fetchWithProgress(url){
     let chunks = [];
     let received = 0;
     const startTime = performance.now();
-
     while(true){
         const {done,value} = await reader.read();
         if(done) break;
@@ -157,7 +163,6 @@ async function fetchWithProgress(url){
         const now = performance.now();
         const elapsed = (now - startTime)/1000;
         const speed = elapsed>0 ? (received / 1024 / elapsed) : 0;
-
         if(total && !Number.isNaN(total)){
             const pct = (received / total)*100;
             progressBar.indeterminate = false;
@@ -182,7 +187,7 @@ async function fetchWithProgress(url){
     return htmlResult;
 }
 
-btnDownload.onclick = async ()=>{
+async function doDownload(){
     let raw = rawUrlEl.value.trim();
     if(!raw) raw = versionSelectEl.value;
     if(!raw){
@@ -204,7 +209,27 @@ btnDownload.onclick = async ()=>{
     }finally{
         btnDownload.disabled = false;
     }
+}
+
+// 输入校验
+confirmInput.addEventListener('input',()=>{
+    btnConfirm.disabled = confirmInput.value.trim() !== "我已理解";
+});
+
+// 替换原来的btnDownload.onclick
+btnDownload.onclick = ()=>{
+    dialog.open = true;
+    confirmInput.value = "";
+    btnConfirm.disabled = true;
 };
+
+btnCancel.addEventListener("click",()=>{
+    dialog.open = false;
+});
+btnConfirm.addEventListener("click",()=>{
+    dialog.open = false;
+    doDownload();
+});
 
 versionSelectEl.addEventListener('change',()=>{
     rawUrlEl.value = versionSelectEl.value;
