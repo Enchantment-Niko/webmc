@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Eaglercraft Blob加载器</title>
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css" />
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html,body {
+            height: 100%;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: rgb(var(--mdui-color-surface));
+            color: rgb(var(--mdui-color-on-surface));
+        }
+        .page-container {
+            max-width:720px;
+            margin:0 auto;
+            padding:2rem 1.2rem 3rem;
+            width:100%;
+            flex:1;
+        }
+        .status-box {
+            margin-top:12px;
+            padding:12px;
+            border-radius:var(--mdui-shape-corner-medium);
+            background:rgb(var(--mdui-color-surface-variant));
+            white-space:pre-wrap;
+            font-family:monospace;
+            font-size:0.9rem;
+            color:rgb(var(--mdui-color-on-surface-variant));
+        }
+        .section-gap {
+            margin:1rem 0;
+        }
+        .footer-wrap{
+            margin-top:3rem;
+            display:flex;
+            gap:1rem;
+            justify-content:center;
+            flex-wrap:wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container" id="mainContent">
+        <h1 style="text-align:center;margin-bottom:2rem">Eaglercraft Blob加载器</h1>
+
+        <mdui-card>
+            <div style="padding:1.5rem">
+                <mdui-select id="versionSelect" label="选择游戏版本" class="section-gap">
+                </mdui-select>
+
+                <mdui-text-field id="rawUrl" label="GitHub Raw地址（自定义）" class="section-gap"></mdui-text-field>
+
+                <mdui-select id="proxySelect" label="选择 gh‑proxy 代理节点" class="section-gap">
+                    <mdui-menu-item value="gh-proxy.org">gh‑proxy.org（自动）</mdui-menu-item>
+                    <mdui-menu-item value="v4.gh-proxy.org">v4.gh‑proxy.org（仅IPv4）</mdui-menu-item>
+                    <mdui-menu-item value="v6.gh-proxy.org">v6.gh‑proxy.org（仅IPv6）</mdui-menu-item>
+                </mdui-select>
+
+                <div class="section-gap">
+                    <mdui-linear-progress id="progressBar"></mdui-linear-progress>
+                    <div id="progressInfo" style="margin-top:6px;font-size:0.85rem;color:rgb(var(--mdui-color-on-surface-variant))">等待下载</div>
+                </div>
+
+                <mdui-button id="btnDownload" variant="filled" full-width class="section-gap">下载并在新about:blank标签打开游戏</mdui-button>
+
+                <div class="status-box" id="status">状态：等待操作</div>
+            </div>
+        </mdui-card>
+
+        <div class="footer-wrap">
+            <mdui-button variant="outlined" href="https://github.com/Enchantment-Niko" target="_blank">Github 主页</mdui-button>
+            <mdui-button variant="outlined" href="https://www.mdui.org/zh-cn/" target="_blank">MDUI2 官网</mdui-button>
+        </div>
+    </div>
+
+<script>
+const VERSION_LIST = [{"version":"1.14.4","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.14.4/index.html"},{"version":"1.16.5","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.16.5/index.html"},{"version":"1.20.6","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.20.6/chinese.html"},{"version":"1.21.11","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/1.21.11/desktop.html"},{"version":"26.1.2","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/26.1.2/novix-1.2.html"},{"version":"26.2","raw":"https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/26.2/index.html"}];
+
+const statusEl = document.getElementById('status');
+const rawUrlEl = document.getElementById('rawUrl');
+const versionSelectEl = document.getElementById('versionSelect');
+const proxySelectEl = document.getElementById('proxySelect');
+const btnDownload = document.getElementById('btnDownload');
+const progressBar = document.getElementById('progressBar');
+const progressInfo = document.getElementById('progressInfo');
+
+function log(msg){
+    statusEl.textContent = msg;
+    console.log(msg);
+}
+
+function resetProgress(){
+    progressBar.value = 0;
+    progressBar.indeterminate = false;
+    progressInfo.textContent = "等待下载";
+}
+
+async function renderSelectUi(){
+    while(versionSelectEl.firstChild){
+        versionSelectEl.removeChild(versionSelectEl.firstChild);
+    }
+    for(const item of VERSION_LIST){
+        const mi = document.createElement('mdui-menu-item');
+        mi.value = item.raw;
+        mi.textContent = item.version;
+        versionSelectEl.appendChild(mi);
+    }
+    await versionSelectEl.updateComplete;
+}
+
+function getProxyUrl(originalRaw){
+    const host = proxySelectEl.value;
+    return `https://${host}/${originalRaw}`;
+}
+
+async function openGameInAboutBlank(htmlStr){
+    const blob = new Blob([htmlStr],{type:"text/html"});
+    const blobUrl = URL.createObjectURL(blob);
+    const win = window.open("about:blank","_blank");
+    if(!win){
+        log("弹窗被浏览器拦截，请允许此网站弹窗");
+        URL.revokeObjectURL(blobUrl);
+        return;
+    }
+    log("已打开about:blank新标签页加载游戏");
+    win.location.href = blobUrl;
+}
+
+async function fetchWithProgress(url){
+    progressBar.indeterminate = true;
+    const resp = await fetch(url);
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}，代理获取内容失败，请尝试切换代理节点`);
+    const total = Number(resp.headers.get('content-length'));
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let chunks = [];
+    let received = 0;
+    const startTime = performance.now();
+
+    while(true){
+        const {done,value} = await reader.read();
+        if(done) break;
+        chunks.push(value);
+        received += value.length;
+        const now = performance.now();
+        const elapsed = (now - startTime)/1000;
+        const speed = elapsed>0 ? (received / 1024 / elapsed) : 0;
+
+        if(total && !Number.isNaN(total)){
+            const pct = (received / total)*100;
+            progressBar.indeterminate = false;
+            progressBar.value = pct / 100;
+            progressInfo.textContent = `${pct.toFixed(1)}% | ${(received/1024).toFixed(1)}KB / ${(total/1024).toFixed(1)}KB | ${speed.toFixed(1)} KB/s`;
+        }else{
+            progressInfo.textContent = `已接收 ${(received/1024).toFixed(1)}KB | ${speed.toFixed(1)} KB/s（服务器未返回总大小）`;
+        }
+    }
+    progressBar.indeterminate = false;
+    progressBar.value = 1;
+    const uint8 = new Uint8Array(received);
+    let pos = 0;
+    for(const chunk of chunks){
+        uint8.set(chunk,pos);
+        pos += chunk.length;
+    }
+    const htmlResult = decoder.decode(uint8);
+    if(!htmlResult || htmlResult.trim().length === 0){
+        throw new Error("解析失败：下载得到空内容，代理返回异常");
+    }
+    return htmlResult;
+}
+
+btnDownload.onclick = async ()=>{
+    let raw = rawUrlEl.value.trim();
+    if(!raw) raw = versionSelectEl.value;
+    if(!raw){
+        log("请选择版本或者填入github raw地址");
+        return;
+    }
+    btnDownload.disabled = true;
+    resetProgress();
+    const host = proxySelectEl.value;
+    log(`正在通过 ${host} 代理下载...`);
+    try{
+        const pUrl = getProxyUrl(raw);
+        const html = await fetchWithProgress(pUrl);
+        log("下载完成，正在打开about:blank标签页");
+        await openGameInAboutBlank(html);
+    }catch(e){
+        log(`下载/解析失败：${e.message}\n提示：切换代理节点、检查网络、确认raw链接有效性`);
+        resetProgress();
+    }finally{
+        btnDownload.disabled = false;
+    }
+};
+
+versionSelectEl.addEventListener('change',()=>{
+    rawUrlEl.value = versionSelectEl.value;
+});
+
+(async function init(){
+    await renderSelectUi();
+})();
+</script>
+</body>
+</html>
