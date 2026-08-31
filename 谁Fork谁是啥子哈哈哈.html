@@ -82,9 +82,12 @@
                 <mdui-select id="versionSelect" label="选择游戏版本" class="section-gap">
                 </mdui-select>
                 <mdui-text-field id="rawUrl" label="GitHub Raw / HTML 地址（自定义）" class="section-gap"></mdui-text-field>
-                <mdui-select id="proxySelect" label="选择代理节点（非 Github Raw 不支持代理）" class="section-gap" disabled></mdui-select>
+                <mdui-select id="proxySelect" label="选择代理节点（非 Github Raw 地址不支持代理）" class="section-gap" disabled></mdui-select>
                 <div class="section-gap">
                     <mdui-checkbox id="autoSwitchNode" checked>失败自动切换节点</mdui-checkbox>
+                </div>
+                <div class="section-gap">
+                    <mdui-checkbox id="enableCustomNode">启用自定义节点（需密码解锁）</mdui-checkbox>
                 </div>
                 <div class="section-gap">
                     <mdui-linear-progress id="progressBar"></mdui-linear-progress>
@@ -105,6 +108,13 @@
     <div id="gameContainer">
         <mdui-button id="backBtn" variant="tonal">返回加载器</mdui-button>
     </div>
+    <mdui-dialog headline="自定义节点验证" class="custom-node-dialog">
+        请输入访问密码以启用自定义节点
+        <mdui-text-field id="customNodePwd" label="密码" type="password" class="section-gap"></mdui-text-field>
+        <mdui-button slot="action" variant="text">取消</mdui-button>
+        <mdui-button slot="action" variant="tonal" disabled>确认</mdui-button>
+    </mdui-dialog>
+
     <mdui-dialog headline="使用的项目" class="opensource-dialog">
         <div class="section-gap">
             <mdui-button variant="filled" full-width href="https://www.mdui.org/zh-cn/" target="_blank">MDUI2</mdui-button>
@@ -129,10 +139,11 @@ const PROXY_LIST = [
     {"name":"直连原始地址 (无代理)","url":""},
     {"name":"MCJS CDN (未填写)","url":""},
     {"name":"@239LAN 节点 (未填写)","url":""},
-    {"name":"gh‑proxy.org（自动）","url":"https://gh-proxy.org/"},
-    {"name":"v4.gh‑proxy.org（仅IPv4）","url":"https://v4.gh-proxy.org/"},
-    {"name":"v6.gh‑proxy.org（仅IPv6）","url":"https://v6.gh-proxy.org/"}
+    {"name":"gh‑proxy.org（自动）","url":"https://gh-proxy.org"},
+    {"name":"v4.gh‑proxy.org（仅IPv4）","url":"https://v4.gh-proxy.org"},
+    {"name":"v6.gh‑proxy.org（仅IPv6）","url":"https://v6.gh-proxy.org"}
 ];
+const CORRECT_PASSWORD = "admin";
 const statusEl = document.getElementById('status');
 const rawUrlEl = document.getElementById('rawUrl');
 const versionSelectEl = document.getElementById('versionSelect');
@@ -144,11 +155,18 @@ const progressInfo = document.getElementById('progressInfo');
 const gameContainer = document.getElementById("gameContainer");
 const backBtn = document.getElementById("backBtn");
 const autoSwitchNodeEl = document.getElementById("autoSwitchNode");
+const enableCustomNodeEl = document.getElementById("enableCustomNode");
+const customNodeDialog = document.querySelector(".custom-node-dialog");
+const customNodePwd = document.getElementById("customNodePwd");
+const customNodeActions = customNodeDialog.querySelectorAll('mdui-button[slot="action"]');
+const customNodeCancel = customNodeActions[0];
+const customNodeConfirm = customNodeActions[1];
 const openSourceBtn = document.getElementById("openSourceBtn");
 const openSourceDialog = document.querySelector(".opensource-dialog");
 const openSourceCloseBtn = openSourceDialog.querySelector('mdui-button[slot="action"]');
 
 let gameBlobUrl = null;
+let customNodeAllowed = false;
 let abortController = null;
 
 function log(msg){
@@ -291,7 +309,14 @@ async function doDownload(){
     btnStop.style.display = "block";
     resetProgress();
 
-    let currentProxyIndex = 0;
+    let startProxyItem;
+    try{
+        startProxyItem = JSON.parse(proxySelectEl.value);
+    }catch(e){
+        startProxyItem = PROXY_LIST[0];
+    }
+    const startIndex = PROXY_LIST.findIndex(p=>p.name === startProxyItem.name);
+    let currentProxyIndex = startIndex;
     const autoSwitch = autoSwitchNodeEl.checked;
     let finalHtml = null;
 
@@ -299,7 +324,6 @@ async function doDownload(){
         while(currentProxyIndex < PROXY_LIST.length){
             const proxyItem = PROXY_LIST[currentProxyIndex];
             log(`正在尝试节点: ${proxyItem.name}`);
-            proxySelectEl.value = JSON.stringify(proxyItem);
             try{
                 const pUrl = getProxyUrl(raw,proxyItem);
                 log(`请求地址：${pUrl}`);
@@ -345,6 +369,35 @@ btnStop.onclick = ()=>{
         abortController.abort();
     }
 };
+customNodePwd.addEventListener('input',()=>{
+    customNodeConfirm.disabled = customNodePwd.value !== CORRECT_PASSWORD;
+});
+customNodeCancel.addEventListener("click",()=>{
+    customNodeDialog.open = false;
+    enableCustomNodeEl.checked = false;
+});
+customNodeConfirm.addEventListener("click",()=>{
+    if(customNodePwd.value === CORRECT_PASSWORD){
+        customNodeAllowed = true;
+        proxySelectEl.disabled = false;
+        customNodeDialog.open = false;
+    }
+});
+enableCustomNodeEl.addEventListener("change",()=>{
+    if(enableCustomNodeEl.checked && !customNodeAllowed){
+        customNodeDialog.open = true;
+        customNodePwd.value = "";
+        customNodeConfirm.disabled = true;
+    }else if(!enableCustomNodeEl.checked){
+        proxySelectEl.disabled = true;
+        customNodeAllowed = false;
+    }
+});
+autoSwitchNodeEl.addEventListener('change',()=>{
+    if(customNodeAllowed){
+        proxySelectEl.disabled = autoSwitchNodeEl.checked;
+    }
+});
 openSourceBtn.onclick = ()=>{
     openSourceDialog.open = true;
 };
@@ -360,6 +413,7 @@ versionSelectEl.addEventListener('change',()=>{
 (async function init(){
     await renderVersionSelectUi();
     await renderProxySelect();
+    proxySelectEl.disabled = true;
 })();
 </script>
 </body>
