@@ -3,6 +3,8 @@
 # Don't fork this repo!!!
 A lot of forks, mojang will DMCA this repo!!!
 Such as lax1dude's eaglercraft 1.8.8 repo
+
+**I'll make the repo private once there are more than 5 forks!**
 # Project Introduction
 ![Intro](title.png "A image")
 # Legal Disclaimer
