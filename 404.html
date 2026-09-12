@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>糟糕...</title>
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css" />
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            min-height: 100vh;
+        }
+        body {
+            background: rgb(var(--mdui-color-surface));
+            color: rgb(var(--mdui-color-on-surface));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+        }
+        .wrap-card {
+            max-width: 520px;
+            width: 100%;
+        }
+        .gif-wrap {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .gif-wrap img {
+            max-width: 100%;
+            border-radius: var(--mdui-shape-corner-medium);
+        }
+        .text-title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+        }
+        .text-body {
+            text-align: center;
+            font-size: 0.95rem;
+            color: rgb(var(--mdui-color-on-surface-variant));
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .btn-footer {
+            display: flex;
+            justify-content: center;
+            margin-bottom:1.5rem;
+        }
+        .copyright-text {
+            text-align: center;
+            font-size:0.8rem;
+            color: rgb(var(--mdui-color-on-surface-variant));
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap-card">
+        <mdui-card>
+            <div style="padding:2rem 1.5rem;">
+                <div class="gif-wrap">
+                    <img src="https://i2.hdslb.com/bfs/new_dyn/ad84307f6c5b087e4816d4dce03857dd337337832.gif" alt="提示动图">
+                </div>
+
+                <div class="text-title">此页面不存在</div>
+                <div class="text-body">您访问的页面不存在或已被删除。<del>或者是被DMCA下架了</del></div>
+
+                <div class="btn-footer">
+                    <mdui-button variant="filled" href="https://www.minecraft.net" target="_blank">
+                        购买完整 Minecraft 游戏
+                    </mdui-button>
+                </div>
+
+                <div class="copyright-text">
+                    © 2026 Enchantment-Niko. 保留所有权利。
+                </div>
+                <div class="copyright-text">
+                    We are not affiliated with Minecraft, Mojang, or Microsoft. All trademarks are the property of their respective owners in the US and other countries.
+                </div>
+            </div>
+        </mdui-card>
+    </div>
+</body>
+</html>
