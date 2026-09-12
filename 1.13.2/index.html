@@ -2,69 +2,68 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Eaglercraft 1.13.2</title>
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css" />
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        body {
-            width: 100vw;
-            height: 100vh;
-            background: url("panorama.png") no-repeat center center;
-            background-size: cover;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: sans-serif;
+        html,body {
+            height: 100%;
         }
-        .container {
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(8px);
-            padding: 40px 60px;
-            border-radius: 16px;
-            text-align: center;
+        body{
+            min-height:100vh;
+            background: rgb(var(--mdui-color-surface));
+            color: rgb(var(--mdui-color-on-surface));
+            display:flex;
+            flex-direction:column;
         }
-        h1 {
-            color: #fff;
-            margin-bottom: 12px;
-            font-size: 28px;
+        .page-container {
+            max-width:720px;
+            margin:0 auto;
+            padding:2rem 1.2rem 3rem;
+            width:100%;
+            flex:1;
+            display:flex;
+            align-items:center;
+            justify-content:center;
         }
-        .desc {
-            color: rgba(255,255,255,0.85);
-            font-size: 16px;
-            margin-bottom: 32px;
-            line-height: 1.6;
+        .info-text{
+            text-align:center;
+            color: rgb(var(--mdui-color-on-surface-variant));
+            margin-bottom: 2rem;
+            line-height:1.6;
         }
-        a {
-            display: block;
-            text-decoration: none;
-            color: white;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.25);
-            padding: 14px 24px;
-            margin:14px 0;
-            border-radius: 12px;
-            font-size:18px;
-            transition: all 0.25s ease;
+        .btn-wrap{
+            display:flex;
+            gap:16px;
+            flex-wrap:wrap;
+            justify-content:center;
         }
-        a:hover {
-            background:rgba(255,255,255,0.25);
-            border-color:rgba(255,255,255,0.4);
+        .btn-wrap mdui-button{
+            min-width:160px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Eaglercraft 1.13.2</h1>
-        <p class="desc">移植作者: arlen 汉化作者: @Enchantment-Niko</p>
-        <p class="desc">哔哩哔哩: @EaglerWool</p>
-        <a href="chinese.html">汉化版</a>
-        <a href="english.html">英文原版</a>
+    <div class="page-container">
+        <mdui-card>
+            <div style="padding:1.5rem;text-align:center;">
+                <h1>Eaglercraft 1.13.2</h1>
+                <div class="info-text">
+                    <p>移植作者: arlen 汉化作者: @Enchantment‑Niko</p>
+                    <p>哔哩哔哩: @EaglerWool</p>
+                </div>
+                <div class="btn-wrap">
+                    <mdui-button href="chinese.html" variant="filled">汉化版</mdui-button>
+                    <mdui-button href="english.html" variant="outlined">英文原版</mdui-button>
+                </div>
+            </div>
+        </mdui-card>
     </div>
 </body>
 </html>

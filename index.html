@@ -2,83 +2,70 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 <title>Eaglercraft 版本选择</title>
+<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css" />
+<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
-body{
-  min-height:100vh;
-  background:#0f1118;
-  background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f1118 70%);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:40px;
-  color:#f1f5f9;
+*{margin:0;padding:0;box-sizing:border-box}
+html,body {
+    height: 100%;
 }
-.container{
-  text-align:center;
-  padding:0 20px;
+body{
+    min-height:100vh;
+    background: rgb(var(--mdui-color-surface));
+    color: rgb(var(--mdui-color-on-surface));
+    display:flex;
+    flex-direction:column;
+}
+.page-container {
+    max-width:720px;
+    margin:0 auto;
+    padding:2rem 1.2rem 3rem;
+    width:100%;
+    flex:1;
 }
 h1{
-  font-size:34px;
-  font-weight:600;
-  margin-bottom:12px;
-  letter-spacing:1px;
+    text-align:center;
+    margin-bottom:0.5rem;
 }
 .subtitle{
-  color:#94a3b8;
-  font-size:16px;
-  margin-bottom:36px;
+    text-align:center;
+    color: rgb(var(--mdui-color-on-surface-variant));
+    margin-bottom:2rem;
 }
 .btn-group{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-  justify-content:center;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
 }
-button{
-  padding:16px 40px;
-  font-size:17px;
-  font-weight:500;
-  border:1px solid rgba(59,130,246,0.3);
-  border-radius:12px;
-  background:rgba(37,99,235,0.15);
-  color:#e2e8f0;
-  cursor:pointer;
-  transition:0.25s ease;
-  backdrop-filter:blur(4px);
-  min-width:180px;
-}
-button:hover{
-  background:rgba(37,99,235,0.35);
-  border-color:rgba(59,130,246,0.6);
-  transform:translateY(-2px);
-  box-shadow:0 8px 24px rgba(37,99,235,0.2);
-}
-button:active{
-  transform:translateY(0px);
+.btn-group mdui-button{
+    min-width:180px;
 }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>Eaglercraft</h1>
-  <div class="subtitle">选择要启动的游戏版本</div>
-  <div class="btn-group">
-    <button onclick="location.href='1.21.11'">1.21.11‑u1beta‑WASM</button>
-    <button onclick="location.href='26.1.2'">26.1.2-Final</button>
-    <button onclick="location.href='1.13.2'">1.13.2 汉化版</button>
-    <button onclick="location.href='1.20.6'">1.20.6 原版 & 汉化</button>
-    <button onclick="location.href='26.2'">26.2 dev-0.4 自带中文语言！</button>
-    <button onclick="location.href='1.14.4'">1.14.4（自带中文）</button>
-    <button onclick="location.href='1.16.5'">1.16.5（英文版，无法汉化）</button>
-    <button onclick="location.href='0.6.1-pe'">0.6.1 PE 携带版</button>
-    <button onclick="location.href='1.6.4-modpack'">1.6.4模组整合包(98个Mod)</button>
-    <button onclick="location.href='webforge'">WebForge 1.6.4 v9</button>
-    <button onclick="location.href='loader.html'">Github raw加载器（速度快，优选！)</button>
-  </div>
+<div class="page-container">
+    <h1>Eaglercraft</h1>
+    <div class="subtitle">选择要启动的游戏版本</div>
+    <mdui-card>
+        <div style="padding:1.5rem">
+            <div class="btn-group">
+                <mdui-button onclick="location.href='1.21.11'" variant="outlined">1.21.11‑u1beta‑WASM</mdui-button>
+                <mdui-button onclick="location.href='26.1.2'" variant="outlined">26.1.2-Final</mdui-button>
+                <mdui-button onclick="location.href='1.13.2'" variant="outlined">1.13.2 汉化版</mdui-button>
+                <mdui-button onclick="location.href='1.20.6'" variant="outlined">1.20.6 原版 & 汉化</mdui-button>
+                <mdui-button onclick="location.href='26.2'" variant="outlined">26.2 dev-0.4 自带中文语言！</mdui-button>
+                <mdui-button onclick="location.href='1.14.4'" variant="outlined">1.14.4（自带中文）</mdui-button>
+                <mdui-button onclick="location.href='1.16.5'" variant="outlined">1.16.5 汉化版（已成功爆破）</mdui-button>
+                <mdui-button onclick="location.href='0.6.1-pe'" variant="outlined">0.6.1 PE 携带版</mdui-button>
+                <mdui-button onclick="location.href='1.6.4-modpack'" variant="outlined">1.6.4模组整合包(98个Mod)</mdui-button>
+                <mdui-button onclick="location.href='webforge'" variant="outlined">WebForge 1.6.4 v9</mdui-button>
+                <mdui-button onclick="location.href='loader.html'" variant="filled">Github raw加载器</mdui-button>
+            </div>
+        </div>
+    </mdui-card>
 </div>
 </body>
 </html>
