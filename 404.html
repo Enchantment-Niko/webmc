@@ -67,18 +67,15 @@
                 <div class="gif-wrap">
                     <img src="https://raw.githubusercontent.com/Enchantment-Niko/webmc/refs/heads/main/work.gif" alt="Niko">
                 </div>
-
                 <div class="text-title">此页面不存在</div>
                 <div class="text-body">您访问的页面不存在或已被删除。<del>或者是被DMCA下架了</del></div>
-
                 <div class="btn-footer">
                     <mdui-button variant="filled" href="https://www.minecraft.net" target="_blank">
                         购买完整 Minecraft 游戏
                     </mdui-button>
                 </div>
-
                 <div class="copyright-text">
-                    © 2026 Enchantment-Niko. 保留所有权利。
+                    © 2026 Enchantment‑Niko. 保留所有权利。
                 </div>
                 <div class="copyright-text">
                     We are not affiliated with Minecraft, Mojang, or Microsoft. All trademarks are the property of their respective owners in the US and other countries.
@@ -86,5 +83,18 @@
             </div>
         </mdui-card>
     </div>
+
+    <mdui-dialog id="infoDialog">
+        <span slot="headline">提示</span>
+        <span slot="description">WebMC 仓库最近修改了html存储位置，请点击下面的按钮前往新页面启动Eaglercraft</span>
+        <mdui-button variant="text" slot="action" onclick="document.getElementById('infoDialog').open = false">关闭</mdui-button>
+        <mdui-button variant="filled" slot="action" href="https://enchantment-niko.github.io/webmc">前往新启动器</mdui-button>
+    </mdui-dialog>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('infoDialog').open = true;
+        });
+    </script>
 </body>
 </html>
