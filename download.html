@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Eaglercraft - 下载</title>
+<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css" />
+<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body {
+    height: 100%;
+}
+body{
+    min-height:100vh;
+    background-image: url("background.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: rgb(var(--mdui-color-surface));
+    color: rgb(var(--mdui-color-on-surface));
+    display:flex;
+    flex-direction:column;
+}
+.page-container {
+    max-width:920px;
+    margin:0 auto;
+    padding:2rem 1.2rem 3rem;
+    width:100%;
+    flex:1;
+}
+h1{
+    text-align:center;
+    margin-bottom:0.5rem;
+}
+.subtitle{
+    text-align:center;
+    color: rgb(var(--mdui-color-on-surface-variant));
+    margin-bottom:2rem;
+}
+.section-title{
+    font-size:1.4rem;
+    font-weight:500;
+    margin:2.5rem 0 1rem;
+}
+.card-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap:1.2rem;
+}
+.version-card mdui-card{
+    height:100%;
+}
+.version-card .card-body{
+    padding:1.5rem;
+}
+.version-card .tag{
+    background:rgb(var(--mdui-color-secondary-container));
+    color:rgb(var(--mdui-color-on-secondary-container));
+    padding:0.3rem 0.6rem;
+    border-radius:4px;
+    display:inline-block;
+    font-size:0.85rem;
+    margin-bottom:0.8rem;
+}
+.version-card h2{
+    font-size:1.6rem;
+    margin-bottom:0.4rem;
+}
+.version-card .meta{
+    color:rgb(var(--mdui-color-on-surface-variant));
+    line-height:1.5;
+    margin-bottom:1rem;
+}
+.version-card .prop{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    margin:0.4rem 0;
+}
+.version-card .footer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:1.2rem;
+    flex-wrap:wrap;
+    gap:8px;
+}
+.download-block{
+    margin-top:14px;
+}
+.progress-text{
+    font-size:0.85rem;
+    color:rgb(var(--mdui-color-on-surface-variant));
+    margin-bottom:4px;
+}
+.progress-bar-bg{
+    width:100%;
+    height:7px;
+    background:rgb(var(--mdui-color-surface-variant));
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:8px;
+}
+.progress-bar-fill{
+    height:100%;
+    width:0%;
+    background:rgb(var(--mdui-color-primary));
+    transition: width 0.15s linear;
+}
+.btn-group-card{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+.nav-bar{
+    position:sticky;
+    top:0;
+    background:rgb(var(--mdui-color-surface));
+    z-index:10;
+    border-bottom:1px solid rgb(var(--mdui-color-outline-variant));
+}
+.nav-inner{
+    max-width:920px;
+    margin:0 auto;
+    padding:0.8rem 1.2rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.nav-title{
+    font-size:1.3rem;
+    font-weight:500;
+}
+.nav-links{
+    display:flex;
+    gap:4px;
+}
+footer{
+    padding:1.5rem 1rem;
+    text-align:center;
+    font-size:0.9rem;
+    color:rgb(var(--mdui-color-on-surface-variant));
+    background:rgb(var(--mdui-color-surface-container));
+}
+footer a{
+    color:rgb(var(--mdui-color-primary));
+    text-decoration:none;
+}
+footer a:hover{
+    text-decoration:underline;
+}
+.hidden{
+    display:none !important;
+}
+</style>
+</head>
+<body>
+<div class="nav-bar">
+    <div class="nav-inner">
+        <div class="nav-title">Eaglercraft</div>
+        <div class="nav-links">
+            <mdui-button class="btn-var-text" onclick="location.href='./index.html'">返回首页</mdui-button>
+        </div>
+    </div>
+</div>
+
+<div class="page-container">
+    <h1>Eaglercraft 下载</h1>
+    <div class="subtitle">Fetch GitHub Raw HTML，拉取版本HTML保存本地</div>
+    <div class="subtitle"><strong>版本更新迭代速度快，离线副本可能会过时</strong></div>
+
+    <div class="card-grid">
+
+        <div class="version-card"
+             data-raw="https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/assets/1.13.2.html"
+             data-filename="1.13.2.html"
+             data-title="Eaglercraft 1.13.2">
+            <mdui-card>
+                <div class="card-body">
+                    <h2>Eaglercraft 1.13.2</h2>
+                    <div class="download-block">
+                        <div class="progress-text">等待操作</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <div class="btn-group-card">
+                            <mdui-button class="btn-var-tonal btnFetch">下载</mdui-button>
+                            <mdui-button class="btn-var-outlined btnAbort hidden">终止</mdui-button>
+                            <mdui-button class="btn-var-tonal btnRetry hidden">重试</mdui-button>
+                        </div>
+                    </div>
+                </div>
+            </mdui-card>
+        </div>
+
+        <div class="version-card"
+             data-raw="https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/assets/1.14.4.html"
+             data-filename="1.14.4.html"
+             data-title="Eaglercraft 1.14.4">
+            <mdui-card>
+                <div class="card-body">
+                    <h2>Eaglercraft 1.14.4</h2>
+                    <div class="download-block">
+                        <div class="progress-text">等待操作</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <div class="btn-group-card">
+                            <mdui-button class="btn-var-tonal btnFetch">下载</mdui-button>
+                            <mdui-button class="btn-var-outlined btnAbort hidden">终止</mdui-button>
+                            <mdui-button class="btn-var-tonal btnRetry hidden">重试</mdui-button>
+                        </div>
+                    </div>
+                </div>
+            </mdui-card>
+        </div>
+
+        <div class="version-card"
+             data-raw="https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/assets/1.16.5.html"
+             data-filename="1.16.5.html"
+             data-title="Eaglercraft 1.16.5">
+            <mdui-card>
+                <div class="card-body">
+                    <h2>Eaglercraft 1.16.5</h2>
+                    <div class="download-block">
+                        <div class="progress-text">等待操作</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <div class="btn-group-card">
+                            <mdui-button class="btn-var-tonal btnFetch">下载</mdui-button>
+                            <mdui-button class="btn-var-outlined btnAbort hidden">终止</mdui-button>
+                            <mdui-button class="btn-var-tonal btnRetry hidden">重试</mdui-button>
+                        </div>
+                    </div>
+                </div>
+            </mdui-card>
+        </div>
+
+        <div class="version-card"
+             data-raw="https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/assets/1.20.6.html"
+             data-filename="1.20.6.html"
+             data-title="Eaglercraft 1.20.6">
+            <mdui-card>
+                <div class="card-body">
+                    <h2>Eaglercraft 1.20.6</h2>
+                    <div class="download-block">
+                        <div class="progress-text">等待操作</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <div class="btn-group-card">
+                            <mdui-button class="btn-var-tonal btnFetch">下载</mdui-button>
+                            <mdui-button class="btn-var-outlined btnAbort hidden">终止</mdui-button>
+                            <mdui-button class="btn-var-tonal btnRetry hidden">重试</mdui-button>
+                        </div>
+                    </div>
+                </div>
+            </mdui-card>
+        </div>
+
+        <div class="version-card"
+             data-raw="https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/assets/1.21.11.html"
+             data-filename="1.21.11.html"
+             data-title="Eaglercraft 1.21.11">
+            <mdui-card>
+                <div class="card-body">
+                    <h2>Eaglercraft 1.21.11</h2>
+                    <div class="download-block">
+                        <div class="progress-text">等待操作</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <div class="btn-group-card">
+                            <mdui-button class="btn-var-tonal btnFetch">下载</mdui-button>
+                            <mdui-button class="btn-var-outlined btnAbort hidden">终止</mdui-button>
+                            <mdui-button class="btn-var-tonal btnRetry hidden">重试</mdui-button>
+                        </div>
+                    </div>
+                </div>
+            </mdui-card>
+        </div>
+
+        <div class="version-card"
+             data-raw="https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/assets/26.1.2.html"
+             data-filename="26.1.2.html"
+             data-title="Eaglercraft 26.1.2">
+            <mdui-card>
+                <div class="card-body">
+                    <h2>Eaglercraft 26.1.2</h2>
+                    <div class="download-block">
+                        <div class="progress-text">等待操作</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <div class="btn-group-card">
+                            <mdui-button class="btn-var-tonal btnFetch">下载</mdui-button>
+                            <mdui-button class="btn-var-outlined btnAbort hidden">终止</mdui-button>
+                            <mdui-button class="btn-var-tonal btnRetry hidden">重试</mdui-button>
+                        </div>
+                    </div>
+                </div>
+            </mdui-card>
+        </div>
+
+        <div class="version-card"
+             data-raw="https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/assets/26.2.html"
+             data-filename="26.2.html"
+             data-title="Eaglercraft 26.2">
+            <mdui-card>
+                <div class="card-body">
+                    <h2>Eaglercraft 26.2</h2>
+                    <div class="download-block">
+                        <div class="progress-text">等待操作</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <div class="btn-group-card">
+                            <mdui-button class="btn-var-tonal btnFetch">下载</mdui-button>
+                            <mdui-button class="btn-var-outlined btnAbort hidden">终止</mdui-button>
+                            <mdui-button class="btn-var-tonal btnRetry hidden">重试</mdui-button>
+                        </div>
+                    </div>
+                </div>
+            </mdui-card>
+        </div>
+
+        <div class="version-card"
+             data-raw="https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/assets/0.6.1-pe.html"
+             data-filename="0.6.1-pe.html"
+             data-title="Minecraft 0.6.1 PE">
+            <mdui-card>
+                <div class="card-body">
+                    <h2>Minecraft 0.6.1 PE</h2>
+                    <div class="download-block">
+                        <div class="progress-text">等待操作</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <div class="btn-group-card">
+                            <mdui-button class="btn-var-tonal btnFetch">下载</mdui-button>
+                            <mdui-button class="btn-var-outlined btnAbort hidden">终止</mdui-button>
+                            <mdui-button class="btn-var-tonal btnRetry hidden">重试</mdui-button>
+                        </div>
+                    </div>
+                </div>
+            </mdui-card>
+        </div>
+
+        <div class="version-card"
+             data-raw="https://github.com/Enchantment-Niko/webmc/raw/refs/heads/main/assets/webforge.html"
+             data-filename="webforge.html"
+             data-title="WebForge">
+            <mdui-card>
+                <div class="card-body">
+                    <h2>WebForge</h2>
+                    <div class="download-block">
+                        <div class="progress-text">等待操作</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <div class="btn-group-card">
+                            <mdui-button class="btn-var-tonal btnFetch">下载</mdui-button>
+                            <mdui-button class="btn-var-outlined btnAbort hidden">终止</mdui-button>
+                            <mdui-button class="btn-var-tonal btnRetry hidden">重试</mdui-button>
+                        </div>
+                    </div>
+                </div>
+            </mdui-card>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    © 2026 Enchantment‑Niko
+</footer>
+
+<script>
+function formatBytes(bytes){
+    if(!bytes || isNaN(bytes)) return "0 B";
+    const units = ['B','KB','MB','GB'];
+    let val = bytes;
+    let unitIdx = 0;
+    while(val >= 1024 && unitIdx < units.length-1){
+        val /= 1024;
+        unitIdx++;
+    }
+    return val.toFixed(2)+" "+units[unitIdx];
+}
+
+function formatSpeed(bytePerSec){
+    return formatBytes(bytePerSec)+"/s";
+}
+
+function saveFile(blob, filename){
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+}
+
+async function handleCardDownload(cardEl){
+    const rawUrl = cardEl.dataset.raw;
+    const saveFilename = cardEl.dataset.filename;
+
+    const btnFetch = cardEl.querySelector('.btnFetch');
+    const btnAbort = cardEl.querySelector('.btnAbort');
+    const btnRetry = cardEl.querySelector('.btnRetry');
+    const progressText = cardEl.querySelector('.progress-text');
+    const progressFill = cardEl.querySelector('.progress-bar-fill');
+
+    const abortCtrl = new AbortController();
+    cardEl._abort = abortCtrl;
+
+    btnFetch.classList.add('hidden');
+    btnAbort.classList.remove('hidden');
+    btnRetry.classList.add('hidden');
+    progressFill.style.width = '0%';
+    progressText.textContent = "开始拉取…";
+
+    try{
+        const resp = await fetch(rawUrl, {signal: abortCtrl.signal});
+        if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+        const total = Number(resp.headers.get('content-length')) || null;
+        const reader = resp.body.getReader();
+        const chunks = [];
+        let received = 0;
+        const startTime = performance.now();
+
+        while(true){
+            const {done, value} = await reader.read();
+            if(done) break;
+            chunks.push(value);
+            received += value.length;
+
+            const elapsedMs = performance.now() - startTime;
+            const bytePerSec = elapsedMs > 0 ? (received / (elapsedMs / 1000)) : 0;
+
+            if(total){
+                const pct = Math.min(100, (received / total)*100);
+                progressFill.style.width = pct+"%";
+                progressText.textContent = `${formatBytes(received)} / ${formatBytes(total)} (${pct.toFixed(1)}%) | ${formatSpeed(bytePerSec)}`;
+            }else{
+                progressText.textContent = `已接收：${formatBytes(received)} | ${formatSpeed(bytePerSec)}`;
+            }
+        }
+        const blob = new Blob(chunks, {type:'text/html'});
+        saveFile(blob, saveFilename);
+        progressFill.style.width = "100%";
+        progressText.textContent = "✅下载完成";
+    }catch(err){
+        if(err.name === 'AbortError'){
+            progressText.textContent = "⚠️已终止";
+        }else{
+            progressText.textContent = "❌"+err.message;
+        }
+    }finally{
+        btnFetch.classList.add('hidden');
+        btnAbort.classList.add('hidden');
+        btnRetry.classList.remove('hidden');
+        cardEl._abort = null;
+    }
+}
+
+function handleCardAbort(cardEl){
+    if(cardEl._abort) cardEl._abort.abort();
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+    const variantMap = {
+        "btn-var-text": "text",
+        "btn-var-filled": "filled",
+        "btn-var-tonal": "tonal",
+        "btn-var-outlined": "outlined",
+        "btn-var-elevated": "elevated",
+        "btn-var-filled-tonal": "filled-tonal"
+    };
+    Object.entries(variantMap).forEach(([className, variantVal])=>{
+        document.querySelectorAll(`mdui-button.${className}`).forEach(btn=>{
+            btn.variant = variantVal;
+        })
+    })
+
+    document.querySelectorAll('.version-card').forEach(card=>{
+        const btnFetch = card.querySelector('.btnFetch');
+        const btnAbort = card.querySelector('.btnAbort');
+        const btnRetry = card.querySelector('.btnRetry');
+
+        btnFetch.addEventListener('click', ()=> handleCardDownload(card));
+        btnAbort.addEventListener('click', ()=> handleCardAbort(card));
+        btnRetry.addEventListener('click', ()=> handleCardDownload(card));
+    })
+})
+</script>
+</body>
+</html>
