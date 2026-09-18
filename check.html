@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Eaglercraft WASM‑GC 环境检测</title>
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css" />
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+        }
+        body {
+            min-height: 100vh;
+            background-image: url("background.png");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: rgb(var(--mdui-color-surface));
+            color: rgb(var(--mdui-color-on-surface));
+            display: flex;
+            flex-direction: column;
+        }
+        .page-container {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 2rem 1.2rem 3rem;
+            width: 100%;
+            flex: 1;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: rgb(var(--mdui-color-on-surface-variant));
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin: 2.5rem 0 1rem;
+        }
+        .result-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgb(var(--mdui-color-outline-variant));
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-icon {
+            flex-shrink: 0;
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+        .result-content {
+            flex: 1;
+        }
+        .result-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        .result-desc {
+            font-size: 0.9rem;
+            color: rgb(var(--mdui-color-on-surface-variant));
+            line-height: 1.5;
+        }
+        .ua-text{
+            font-family:monospace;
+            word-break:break-all;
+            margin-top:4px;
+            font-size:0.8rem;
+        }
+        .status-ok {
+            color: rgb(var(--mdui-color-success));
+        }
+        .status-warn {
+            color: rgb(var(--mdui-color-warning));
+        }
+        .status-error {
+            color: rgb(var(--mdui-color-error));
+        }
+        footer {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgb(var(--mdui-color-on-surface-variant));
+            background: rgb(var(--mdui-color-surface-container));
+        }
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            background: rgb(var(--mdui-color-surface));
+            z-index: 10;
+            border-bottom: 1px solid rgb(var(--mdui-color-outline-variant));
+        }
+        .nav-inner {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+        .nav-links {
+            display: flex;
+            gap: 4px;
+        }
+        mdui-code-block::part(code) {
+            white-space: pre-wrap !important;
+            word-break: break-all !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <div class="nav-inner">
+            <div class="nav-title">Eaglercraft 环境检测</div>
+            <div class="nav-links">
+                <mdui-button variant="text" onclick="location.href='./index.html'">返回首页</mdui-button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <h1>WASM‑GC 运行环境检测</h1>
+        <div class="subtitle">检查浏览器是否满足 Eaglercraft‑WASM 最低运行条件</div>
+
+        <mdui-card style="padding: 1.5rem;">
+            <div id="check-result"></div>
+        </mdui-card>
+
+        <h2 class="section-title">检测日志</h2>
+        <mdui-code-block id="log-block"></mdui-code-block>
+
+        <h2 class="section-title">重要提示</h2>
+        <mdui-card style="padding: 1.5rem;">
+            <ul style="padding-left: 1.2rem; line-height: 1.7; color: rgb(var(--mdui-color-on-surface-variant));">
+                <li>本地 file:// 协议会禁用 SharedArrayBuffer，必须使用 Web 服务器并配置 COOP / COEP 响应头。</li>
+                <li>Chromium ≥119 才完整支持 WASM‑GC；旧版浏览器将回退到 JS 模式，性能大幅下降。</li>
+                <li>JS 无法读取浏览器“硬件加速”开关，请手动前往 chrome://settings/system / edge://settings/system 确认开启。</li>
+                <li>deviceMemory、hardwareConcurrency 为浏览器提供的预估值，仅供参考。</li>
+                <li><strong>Edge浏览器无法使用 WASM-GC 可能的解决方法：<a href="https://github.com/mcjsteam/mcjs/issues/140">GitHub</a></strong></li>
+                <li>部分Edge版本WASM‑GC编译直接崩溃；尝试：①更新Edge到最新版；②关闭硬件加速重启浏览器；③使用命令行启动Edge添加启动参数 <code>--disable-features=RendererCodeIntegrity</code> 绕过渲染器完整性校验。</li>
+            </ul>
+        </mdui-card>
+    </div>
+
+    <footer>
+        © 2026 Enchantment‑Niko
+    </footer>
+
+<script>
+    const logBlock = document.querySelector("#log-block");
+    const resultWrap = document.querySelector("#check-result");
+    const logLines = [];
+
+    function log(msg) {
+        logLines.push(msg);
+        logBlock.textContent = logLines.join("\n");
+    }
+
+    async function runDetection() {
+        log("===== Eaglercraft WASM‑GC 环境检测开始 =====");
+        const checks = [];
+        const uaRaw = navigator.userAgent;
+
+        const hasChromeFamily = /Chrome\/|Chromium\/|Edg\/|Brave\//.test(uaRaw);
+        const isFirefox = /Firefox\//.test(uaRaw);
+        const isAppleSafari = /Safari\//.test(uaRaw) && !hasChromeFamily;
+        const isChromium = hasChromeFamily && !isFirefox && !isAppleSafari;
+
+        checks.push({
+            title:"User‑Agent",
+            status:"warn",
+            desc:"完整浏览器标识",
+            uaText:uaRaw
+        });
+
+        checks.push({
+            title: "浏览器内核",
+            status: isChromium ? "ok" : "error",
+            desc: isChromium
+                ? "识别为 Chromium 系列浏览器(Chrome/Edge/Brave/Chromium)"
+                : "非 Chromium 内核，WASM‑GC 可能无法完整运行"
+        });
+
+        let supportWasmGC = false;
+        try {
+            const bin = new Uint8Array([
+                0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 0, 3, 2, 1, 0, 7, 8, 1, 4, 109, 97, 105, 110, 0, 0, 10, 6, 1, 4, 0, 65, 0, 11
+            ]);
+            await WebAssembly.compile(bin);
+            supportWasmGC = !!WebAssembly.GC;
+        } catch (e) {
+            supportWasmGC = false;
+        }
+        checks.push({
+            title: "WebAssembly‑GC (WASM‑GC)",
+            status: supportWasmGC ? "ok" : "error",
+            desc: supportWasmGC
+                ? "浏览器支持 WASM‑GC，可以运行 WASM 版本客户端"
+                : "不支持，只能回退 JS 版本，性能较差"
+        });
+
+        const hasSAB = typeof SharedArrayBuffer !== "undefined";
+        checks.push({
+            title: "SharedArrayBuffer",
+            status: hasSAB ? "ok" : "error",
+            desc: hasSAB
+                ? "可用，需要服务器配置 COOP + COEP HTTP 头"
+                : "不可用，无法启用多线程区块加载"
+        });
+
+        const canvas = document.createElement("canvas");
+        const gl1 = !!(canvas.getContext("webgl") || canvas.getContext("experimental-webgl"));
+        const gl2 = !!canvas.getContext("webgl2");
+
+        checks.push({
+            title: "WebGL 1",
+            status: gl1 ? "ok" : "error",
+            desc: gl1 ? "WebGL1 就绪，游戏渲染必需" : "缺少 WebGL1，游戏无法渲染画面"
+        });
+
+        checks.push({
+            title: "WebGL 2",
+            status: gl2 ? "ok" : "warn",
+            desc: gl2 ? "WebGL2 已支持" : "不支持 WebGL2，部分渲染特性降级"
+        });
+
+        const devMem = navigator.deviceMemory;
+        let memStatus = "warn";
+        let memDesc = "navigator.deviceMemory 无法读取";
+
+        if (devMem) {
+            memDesc = "报告设备内存：" + devMem + "GB";
+            if (devMem >= 4) {
+                memStatus = "ok";
+                memDesc += "，满足最低 4GB 要求";
+            } else {
+                memStatus = "error";
+                memDesc += "，小于 4GB，容易卡顿崩溃";
+            }
+        }
+
+        checks.push({
+            title: "设备内存",
+            status: memStatus,
+            desc: memDesc
+        });
+
+        const cores = navigator.hardwareConcurrency || 0;
+        let coreStatus = "warn";
+        let coreDesc = "无法获取 CPU 核心数";
+
+        if (cores > 0) {
+            coreDesc = "逻辑 CPU 核心数：" + cores;
+            if (cores >= 2) {
+                coreStatus = "ok";
+                coreDesc += "，满足最低双核要求";
+            } else {
+                coreStatus = "error";
+                coreDesc += "，单核性能不足以流畅运行";
+            }
+        }
+
+        checks.push({
+            title: "CPU 逻辑核心",
+            status: coreStatus,
+            desc: coreDesc
+        });
+
+        let html = "";
+        const iconMap = {
+            ok: '<span class="status-ok">✓</span>',
+            warn: '<span class="status-warn">⚠</span>',
+            error: '<span class="status-error">✕</span>'
+        };
+
+        for (const c of checks) {
+            log(c.title + " [" + c.status + "] " + c.desc + (c.uaText ? " UA:"+c.uaText : ""));
+            let extraUaHtml = c.uaText ? `<div class="ua-text">${c.uaText}</div>` : "";
+
+            html += `
+<div class="result-item">
+    <div class="result-icon">${iconMap[c.status]}</div>
+    <div class="result-content">
+        <div class="result-name">${c.title}</div>
+        <div class="result-desc">${c.desc}</div>
+        ${extraUaHtml}
+    </div>
+</div>`;
+        }
+
+        resultWrap.innerHTML = html;
+        log("===== 检测完成 =====");
+
+        const hasError = checks.some(x => x.status === "error");
+        const summaryEl = document.createElement("div");
+        summaryEl.style.marginTop = "1rem";
+        summaryEl.style.paddingTop = "1rem";
+        summaryEl.style.borderTop = "1px solid rgb(var(--mdui-color-outline-variant))";
+        if (hasError) {
+            summaryEl.innerHTML = '<mdui-alert variant="error" closeable>部分关键项检测失败，WASM‑GC 版本大概率无法正常运行。</mdui-alert>';
+        } else {
+            summaryEl.innerHTML = '<mdui-alert variant="success" closeable>基础检测全部通过，注意服务器必须配置 COOP / COEP 才能完整启用全部能力。</mdui-alert>';
+        }
+        resultWrap.appendChild(summaryEl);
+    }
+
+    document.addEventListener("DOMContentLoaded", runDetection);
+</script>
+</body>
+</html>
