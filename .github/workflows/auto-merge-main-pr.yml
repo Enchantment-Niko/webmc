@@ -1,0 +1,22 @@
+name: Direct Merge PR From Main Repo
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.head.repo.full_name == 'Enchantment-Niko/webmc' &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.draft == false
+    steps:
+      - name: Merge immediately
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+        run: gh pr merge --squash "$PR_NUM"
