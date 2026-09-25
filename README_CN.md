@@ -1,12 +1,12 @@
 # webmc
-[中文](README.md) | English
-# Don't fork this repo!!!
-A lot of forks, mojang will DMCA this repo!!!
-Such as lax1dude's eaglercraft 1.8.8 repo
-# Legal Disclaimer
-* For learning and reference only, does not provide the full game or source code
-* Only a trial version is provided, please purchase the full version for the complete game
-* If you want the game, please buy the official version at [minecraft.net](https://www.minecraft.net/)
+[English](README.md) | 简体中文
+# 请勿Fork项目！！！
+大量的fork会引起Mojang注意，导致仓库被DMCA下架！！！
+例如 lax1dude 的Eaglercraft 1.8.8 src
+# 法律声明
+* 仅供学习参考使用，不提供游戏本体及源代码
+* 仅提供试玩版，完整版请购买正版
+* 如需游戏请去[minecraft.net](https://www.minecraft.net/)购买正版
 ## Star History
 
 <a href="https://www.star-history.com/?repos=Enchantment-Niko%2Fwebmc&type=date&legend=top-left">
