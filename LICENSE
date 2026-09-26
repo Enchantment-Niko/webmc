@@ -1,21 +1,17 @@
-MIT License
+Copyright (c) 2026 Enchantment Niko. All Rights Reserved.
 
-Copyright (c) 2026 Enchantment
+1. GRANT OF LICENSE
+This repository and its contents are provided for personal, non-commercial, educational, and reference purposes ONLY. 
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+2. RESTRICTIONS
+You may NOT:
+- Fork, redistribute, sublicense, or publicly deploy this repository or any part of it.
+- Modify, adapt, or create derivative works based on this repository.
+- Use this repository or any of its contents for commercial purposes.
+- Remove or alter this copyright notice or any disclaimers.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+3. THIRD-PARTY ASSETS
+All Minecraft-related assets, textures, sounds, code, and trademarks are the property of Mojang Studios and Microsoft. They are included in this repository strictly for educational and demonstration purposes. This license does NOT grant you any rights to use Mojang's intellectual property.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+4. DISCLAIMER
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. THE AUTHOR IS NOT LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
