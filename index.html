@@ -30,6 +30,10 @@ body{
     display:flex;
     flex-direction:column;
 }
+img {
+    max-width: 100%;
+    height: auto;
+}
 .page-container {
     max-width:920px;
     margin:0 auto;
@@ -170,6 +174,8 @@ h1{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 .nav-title{
     font-size:1.3rem;
@@ -178,6 +184,7 @@ h1{
 .nav-links{
     display:flex;
     gap:4px;
+    flex-wrap: wrap;
 }
 footer{
     padding:1.5rem 1rem;
@@ -274,6 +281,55 @@ code {
     opacity: 1;
     transform: translateY(-50%) translateX(0);
 }
+
+@media (max-width: 640px) {
+    .page-container {
+        padding: 1.2rem 0.8rem 2rem;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 1.2rem;
+    }
+    .section-title {
+        font-size: 1.15rem;
+        margin: 2rem 0 0.8rem;
+    }
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+    .nav-inner {
+        padding: 0.6rem 0.8rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .nav-title {
+        font-size: 1.15rem;
+    }
+    .nav-links {
+        width: 100%;
+    }
+    .back-to-top {
+        right: 0.9rem;
+        bottom: 0.9rem;
+        width: 2.6rem;
+        height: 2.6rem;
+    }
+    .back-to-top .tooltip {
+        display: none;
+    }
+    .transparent-notice {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.6rem;
+    }
+    .transparent-notice mdui-button {
+        align-self: flex-end;
+    }
+}
 </style>
 </head>
 <body>
@@ -291,7 +347,7 @@ code {
 <div class="page-container">
     <h1>Eaglercraft</h1>
     <div class="subtitle">中文网页版 Minecraft 高版本启动器</div>
-    <div class="divider"></div>
+    <mdui-linear-progress></mdui-linear-progress>
     
     <mdui-card class="transparent-notice" style="padding: 1.2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
         <div style="flex: 1; font-size: 0.95rem; color: rgb(var(--mdui-color-on-surface));">
@@ -714,15 +770,15 @@ code {
     </mdui-card>
     <mdui-card style="padding:1.5rem;">
         <h3>Star History</h3>
-        <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
+        <div style="margin:1rem 0;">
         <a href="https://www.star-history.com/?repos=Enchantment-Niko%2Fwebmc&type=date&legend=top-left">
             <picture>
                 <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Enchantment-Niko/webmc&type=date&theme=dark&legend=top-left&sealed_token=oNqN2ps3sK8SvjybGenkelPIXFPh9y4Z4loRyrVTLAIqp5sE1hvwwJEQjjgArHaBbkrdXXrCRLoY2SdWqv3EAVP9iexT7SX5TdgjxKfw8E8hjrHodrCNkQ" />
                 <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Enchantment-Niko/webmc&type=date&legend=top-left&sealed_token=oNqN2ps3sK8SvjybGenkelPIXFPh9y4Z4loRyrVTLAIqp5sE1hvwwJEQjjgArHaBbkrdXXrCRLoY2SdWqv3EAVP9iexT7SX5TdgjxKfw8E8hjrHodrCNkQ" />
-                <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Enchantment-Niko/webmc&type=date&legend=top-left&sealed_token=oNqN2ps3sK8SvjybGenkelPIXFPh9y4Z4loRyrVTLAIqp5sE1hvwwJEQjjgArHaBbkrdXXrCRLoY2SdWqv3EAVP9iexT7SX5TdgjxKfw8E8hjrHodrCNkQ" />
+                <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Enchantment-Niko/webmc&type=date&legend=top-left&sealed_token=oNqN2ps3sK8SvjybGenkelPIXFPh9y4Z4loRyrVTLAIqp5sE1hvwwJEQjjgArHaBbkrdXXrCRLoY2SdWqv3EAVP9iexT7SX5TdgjxKfw8E8hjrHodrCNkQ" style="width:100%; height:auto; display:block;" />
             </picture>
         </a>
-        </p>
+        </div>
     </mdui-card>
 </div>
 
