@@ -337,9 +337,9 @@ code {
     <div class="nav-inner">
         <div class="nav-title">Eaglercraft</div>
         <div class="nav-links">
-            <mdui-button class="btn-var-text" onclick="location.href='./download.html'" disabled>下载</mdui-button>
-            <mdui-button class="btn-var-tonal" id="feedback-btn">反馈</mdui-button>
-            <mdui-button class="btn-var-tonal" onclick="location.href='https://discord.gg/HHB6E8HhGv'">Discord</mdui-button>
+            <mdui-button class="btn-var-text" id="download-btn">下载</mdui-button>
+            <mdui-button class="btn-var-text" id="feedback-btn">反馈</mdui-button>
+            <mdui-button class="btn-var-text" onclick="location.href='https://discord.gg/HHB6E8HhGv'">Discord</mdui-button>
         </div>
     </div>
 </div>
@@ -711,7 +711,7 @@ code {
         <mdui-button class="btn-var-text" onclick="location.href='https://github.com/Enchantment-Niko/webmc'" target="_blank">访问 Github 仓库</mdui-button>
         <h3>Q: 离线下载什么时候开放？</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
-            A: 离线 HTML 大小大，且维护 / 更新困难，暂不提供
+            A: 离线 HTML 大小大，且维护 / 更新困难，只提供英文版原版下载
         </p>
         <h3>Q: 目前和 MCJS 的关系是什么？</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
@@ -800,6 +800,13 @@ code {
     <mdui-button slot="action" variant="tonal" onclick="window.open('https://github.com/Enchantment-Niko/webmc/discussions','_blank');document.getElementById('feedback-dialog').open = false">前往</mdui-button>
 </mdui-dialog>
 
+<mdui-dialog id="download-dialog">
+    <span slot="headline">提示</span>
+    <span slot="description">离线下载暂且只有英文版，没有中文版</span>
+    <mdui-button slot="action" variant="text" onclick="document.getElementById('download-dialog').open = false">取消</mdui-button>
+    <mdui-button slot="action" variant="tonal" onclick="window.open('https://pan.huang1111.cn/s/E7RBlUb','_blank');document.getElementById('download-dialog').open = false">前往</mdui-button>
+</mdui-dialog>
+
 <script>
 document.addEventListener('DOMContentLoaded', ()=>{
     const variantMap = {
@@ -827,6 +834,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const feedbackDialog = document.getElementById('feedback-dialog');
     feedbackBtn.addEventListener('click', ()=>{
         feedbackDialog.open = true;
+    });
+
+    const downloadBtn = document.getElementById('download-btn');
+    const downloadDialog = document.getElementById('download-dialog');
+    downloadBtn.addEventListener('click', ()=>{
+        downloadDialog.open = true;
     });
 
     const backToTop = document.getElementById('back-to-top');
