@@ -12,6 +12,18 @@
 <title>Eaglercraft 高版本启动器</title>
 <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css" />
 <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+
+<script>
+    // 检测用户语言，我可真聪明，除非他用 --accept-lang=zh-CN 这种方式伪造 UA，普通的 --lang=zh-CN 是没用的哈哈
+(function redirectNonChinese() {
+    const userLang = navigator.language || navigator.userLanguage || '';
+    if (!/zh/i.test(userLang)) {
+        window.location.href = '404.html';
+    }
+})();
+
+</script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html, body {
@@ -67,6 +79,7 @@ h1{
     -webkit-backdrop-filter: blur(6px);
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     width: fit-content;
+    scroll-margin-top: 5rem;
 }
 .divider{
     height:1px;
@@ -296,6 +309,7 @@ code {
     .section-title {
         font-size: 1.15rem;
         margin: 2rem 0 0.8rem;
+        scroll-margin-top: 7rem;
     }
     .card-grid {
         grid-template-columns: 1fr;
@@ -356,7 +370,14 @@ code {
         <mdui-button class="btn-var-text" onclick="location.href='https://mcjs.link'" target="_blank">访问 MCJS.Link</mdui-button>
     </mdui-card>
 
-    <h2 class="section-title">游玩</h2>
+    <mdui-card class="transparent-notice" style="padding: 1.2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
+        <div style="flex: 1; font-size: 0.95rem; color: rgb(var(--mdui-color-on-surface));">
+            <strong>跳转：</strong> <br>
+            <a href="#play">游玩</a> | <a href="#faq">FAQ</a> | <a href="#bugs">已知 Bug</a> | <a href="#about">关于</a> | <a href="#links">友情链接</a> 
+        </div>
+    </mdui-card>
+
+    <h2 class="section-title" id="play">游玩</h2>
     <div class="card-grid">
         <div class="version-card">
             <mdui-card>
@@ -689,57 +710,95 @@ code {
 
     <div class="divider"></div>
 
-    <h2 class="section-title">Q&A</h2>
+    <h2 class="section-title" id="faq">FAQ</h2>
     <mdui-card style="padding:1.5rem;">
-        <h3>Q: 存档会丢失吗？</h3>
+        <h3>Q1: 存档会丢失吗？</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
             A: 存档一般来讲不清除浏览器缓存 / Cookies不会丢失，但请注意定期备份您的存档文件。
         </p>
-        <h3>Q: 为什么有些版本不支持移动设备？</h3>
+        <h3>Q2: 为什么有些版本不支持移动设备？</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
             A: 因为原作者制作时没有为触屏适配，且适配困难
         </p>
-        <h3>Q: 会收集个人信息吗？</h3>
+        <h3>Q3: 会收集个人信息吗？</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
             A: 不会。本网站是静态网站，不会收集或窃取您的个人信息。<br>
             注：来历不明的客户端可能含有后门代码，请谨慎游玩。
         </p>
-        <h3>Q: 如何提交更多高版本客户端？</h3>
+        <h3>Q4: 如何提交更多高版本客户端？</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
             A: 您可以通过访问我们的 GitHub 仓库并创建一个 讨论(Discussions) 来贡献更多高版本的客户端。
         </p>
         <mdui-button class="btn-var-text" onclick="location.href='https://github.com/Enchantment-Niko/webmc'" target="_blank">访问 Github 仓库</mdui-button>
-        <h3>Q: 离线下载什么时候开放？</h3>
+        <h3>Q5: 离线下载什么时候开放？</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
             A: 离线 HTML 大小大，且维护 / 更新困难，只提供英文版原版下载
         </p>
-        <h3>Q: 目前和 MCJS 的关系是什么？</h3>
+        <h3>Q6: 目前和 MCJS 的关系是什么？</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
             A: MCJS 是 Enchantment-Niko 的合作伙伴，提供了镜像站点，解决了国内用户访问 Github Pages 慢的问题。
         </p>
-        <h3>Q: 如何联机 / 联机卡顿？</h3>
+        <h3>Q7: 如何联机 / 联机卡顿？</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
             A: 国外 Relay 联机节点可能访问慢，可以进入游戏添加 <code>wss://relay.mcjs.link/</code> 为主要节点。<br>
             但请注意：联机服务完全公益，请勿滥用（由 MCJS 运营）
         </p>
+    </mdui-card>
+
         <div class="divider"></div>
-        <h2>已知 Bug：</h2><br>
+
+    <h2 class="section-title" id="bugs">已知 Bug</h2>
+    <mdui-card style="padding:1.5rem;">
+        <h2>来自 <a href="https://space.bilibili.com/3546891306403960" target="_blank">哔哩哔哩@TestPlayer_01</a> 反馈</h2><br>
         <h3>1.13.2</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;"> 
         创建世界时 "允许作弊" 开关失效，需要开启共享世界才能作弊<br>
-        模型图层混乱 / 颠倒<br>
-        箱子等不完整方块渲染错误
+        物品模型图层混乱 / 颠倒<br>
+        箱子等不完整方块渲染错误<br>
+        本地上传的皮肤无法正常显示
         </p>
         <h3>1.21.11</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;"> 
-        需要导入一个皮肤方可进入游戏，或者是单击下方按钮保存一个临时 Steve 皮肤：
+        无法保存存档<br>
+        TPS 可能永久冻结<br>
+        需要导入一个皮肤方可进入游戏，没有皮肤就单击下方按钮保存一个临时 Steve 皮肤：
         </p>
         <mdui-button class="btn-var-text" onclick="location.href='https://mcjs.link/steve.png'" target="_blank" download>获取 steve.png</mdui-button>
+        <h3>1.14.4</h3>
+        <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;"> 
+        披风渲染问题<br>
+        本地上传的皮肤游戏无法保存<br>
+        生物群系过渡开了游戏可能会卡顿
+        </p>
+        <h3>1.16.5</h3>
+        <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">        
+        游戏总体亮度偏暗
+        </p>
+        <h3>1.20.6</h3>
+        <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
+        自带节点可能无法使用（使用 MCJS 节点即可：<code>wss://relay.mcjs.link/</code>）
+        </p>
+        <h3>26.1.2</h3>
+        <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
+        性能极差，普通电脑可能无法流畅运行，甚至可能无法进入游戏<br>
+        无法备份存档
+        </p>
+        <h3>26.2</h3>
+        <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
+        不支持 Vulkcan 渲染器<br>
+        联机功能以及节点设置有一点点问题（不影响正常游玩）
+        </p>
+        <h3>26.3</h3>
+        <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
+        坐垫叠两层挖掉游戏会崩溃<br>
+        快速移动到已加载区块游戏会卡各种各样的bug<br>
+        如船开在地上的速度和开在冰上的速度一样快且无法转向和直接开到空气上都能和在冰上一样而悬空
+        </p>
     </mdui-card>
 
     <div class="divider"></div>
 
-    <h2 class="section-title">关于</h2>
+    <h2 class="section-title" id="about">关于</h2>
     <mdui-card style="padding:1.5rem;">
         <h3>关于 Eaglercraft</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
@@ -750,7 +809,7 @@ code {
 
     <div class="divider"></div>
 
-    <h2 class="section-title">友链</h2>
+    <h2 class="section-title" id="links">友链</h2>
     <mdui-card style="padding:1.5rem;">
         <h3><img src="https://mcjs.link/favicon.png" alt="MCJS Logo" width="24" height="24"> MCJS</h3>
         <p style="margin:1rem 0;color:rgb(var(--mdui-color-on-surface-variant));line-height:1.6;">
