@@ -149,7 +149,7 @@
                 <li>Chromium ≥119 才完整支持 WASM‑GC；旧版浏览器将回退到 JS 模式，性能大幅下降。</li>
                 <li>JS 无法读取浏览器“硬件加速”开关，请手动前往 chrome://settings/system / edge://settings/system 确认开启。</li>
                 <li>deviceMemory、hardwareConcurrency 为浏览器提供的预估值，仅供参考。</li>
-                <li><strong>Edge浏览器无法使用 WASM‑GC 可能的解决方法：<a href="https://github.com/mcjsteam/mcjs/issues/140">GitHub</a></strong></li>
+        <!-- <li><strong>Edge浏览器无法使用 WASM‑GC 可能的解决方法：<a href="https://github.com/mcjsteam/mcjs/issues/140">GitHub</a></strong></li> --!>
                 <li>部分Edge版本WASM‑GC编译直接崩溃；尝试：①更新Edge到最新版；②关闭硬件加速重启浏览器；③使用命令行启动Edge添加启动参数 <code>--disable-features=RendererCodeIntegrity</code> 绕过渲染器完整性校验。</li>
                 <li>⚠WebGL2检测页面获取失败≠浏览器不支持WebGL2，网页上下文抢占会造成检测失败，游戏内部仍然可以正常初始化WebGL2。</li>
                 <li>⚠SharedArrayBuffer打叉代表<strong>当前网页缺少安全HTTP头</strong>，不代表浏览器内核不支持该API。</li>
